@@ -1,64 +1,62 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function FinalPage() {
   const searchParams = useSearchParams();
-  const [answer, setAnswer] = useState(null);
+  const [agree, setAgree] = useState(null);
 
-  const handleAnswer = (ans) => {
-    setAnswer(ans);
-    if (ans === 'yes') {
-      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+  useEffect(() => {
+    // optional: start confetti if needed
+    if (agree === true) {
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
     }
-  };
+  }, [agree]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-purple-50 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-50 to-pink-100">
       <motion.h1
         className="text-4xl font-bold mb-6"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: 'spring', stiffness: 120 }}
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
       >
         Чи надтай болзоонд явхыг зөвшөөрч байна уу?
       </motion.h1>
 
-      <div className="flex space-x-4">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => handleAnswer('yes')}
-          className={`px-6 py-3 rounded text-white font-semibold ${
-            answer === 'yes' ? 'bg-green-500' : 'bg-green-400'
-          }`}
+      <div className="flex gap-6">
+        <button
+          onClick={() => setAgree(true)}
+          className={`px-6 py-3 rounded-full font-bold ${
+            agree === true ? 'bg-green-400 text-white' : 'bg-white text-green-500'
+          } shadow-lg hover:scale-105 transition-transform`}
         >
           YES
-        </motion.button>
-
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => handleAnswer('no')}
-          className={`px-6 py-3 rounded text-white font-semibold ${
-            answer === 'no' ? 'bg-red-500' : 'bg-red-400'
-          }`}
+        </button>
+        <button
+          onClick={() => setAgree(false)}
+          className={`px-6 py-3 rounded-full font-bold ${
+            agree === false ? 'bg-red-400 text-white' : 'bg-white text-red-500'
+          } shadow-lg hover:scale-105 transition-transform`}
         >
           NO
-        </motion.button>
+        </button>
       </div>
 
-      {answer && (
-        <motion.div
-          className="mt-8 text-xl font-medium"
+      {agree !== null && (
+        <motion.p
+          className="mt-6 text-xl font-semibold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          Таны сонголт: {answer.toUpperCase()}
-        </motion.div>
+          {agree ? 'Баяр хүргэе! 🎉 Болзоонд явна!' : 'Тийнмээ надтай болзоонд явхаар боллоооо...'}
+        </motion.p>
       )}
     </div>
   );
