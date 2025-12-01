@@ -1,14 +1,13 @@
-// app/layout.jsx
-import './globals.css';  // зөв зам
+import './globals.css';
 
 export const metadata = {
-  title: 'Date App',
-  description: 'Romantic date app',
+  title: 'Bolzoonii Sanal',
+  description: 'Romantic dating experience',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="mn">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );

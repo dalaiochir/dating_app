@@ -1,4 +1,4 @@
-'use client'; // Client component
+'use client';
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -9,22 +9,12 @@ export default function PlanPage() {
   const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    // Жишээ: search params-аас тохируулах
     const planType = searchParams.get('type') || 'romantic';
-    if (planType === 'romantic') {
-      setActivities([
-        'Цэцэг худалдаж авах',
-        'Хоол хийх',
-        'Нүүр номон дээр хайртай үг бичих',
-        'Хамтдаа кино үзэх',
-      ]);
-    } else {
-      setActivities([
-        'Coffee shop-д очих',
-        'Парканд алхах',
-        'Ном унших',
-      ]);
-    }
+    setActivities(
+      planType === 'romantic'
+        ? ['Цэцэг худалдаж авах', 'Хоол хийх', 'Кино үзэх', 'Нүүр номон дээр хайртай үг бичих']
+        : ['Coffee shop-д очих', 'Парканд алхах', 'Ном унших']
+    );
   }, [searchParams]);
 
   return (

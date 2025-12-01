@@ -1,7 +1,7 @@
-'use client'; // Client component
+'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
@@ -12,11 +12,7 @@ export default function FinalPage() {
   const handleAnswer = (ans) => {
     setAnswer(ans);
     if (ans === 'yes') {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
   };
 
