@@ -10,7 +10,6 @@ export default function FinalPage() {
   const [agree, setAgree] = useState(null);
 
   useEffect(() => {
-    // optional: start confetti if needed
     if (agree === true) {
       confetti({
         particleCount: 200,
@@ -55,7 +54,7 @@ export default function FinalPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          {agree ? 'Баяр хүргэе! 🎉 Болзоонд явна!' : 'Тийнмээ надтай болзоонд явхаар боллоооо...'}
+          {agree ? 'Баяр хүргэе! 🎉 Болзоонд явна!' : 'Өө, дараа үзнэ ээ 😢'}
         </motion.p>
       )}
     </div>
