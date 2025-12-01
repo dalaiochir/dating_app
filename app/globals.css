@@ -1,12 +1,10 @@
+/* app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-gray-50 text-gray-900;
+  margin: 0;
   font-family: 'Inter', sans-serif;
-}
-
-button {
-  @apply transition-all duration-300 ease-in-out hover:scale-105;
+  background-color: #fff0f5; /* subtle romantic background */
 }
