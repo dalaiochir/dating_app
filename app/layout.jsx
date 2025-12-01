@@ -1,5 +1,5 @@
 // app/layout.jsx
-import '../globals.css'; // globals.css нь app хавтас дотор байгаа тохиолдолд энэ зам зөв
+import './globals.css';  // зөв зам
 
 export const metadata = {
   title: 'Date App',
