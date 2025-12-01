@@ -1,47 +1,69 @@
-'use client';
-export const dynamic = 'force-dynamic';
+'use client'; // Client component
 
-import { useEffect } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 
 export default function FinalPage() {
-  const sp = useSearchParams();
-  const router = useRouter();
-  const ans = sp.get('ans');
-  const ideasRaw = sp.get('ideas') || '';
-  const chosenIndexes = ideasRaw ? ideasRaw.split(',').map(i => parseInt(i)) : [];
+  const searchParams = useSearchParams();
+  const [answer, setAnswer] = useState(null);
 
-  const allIdeas = [
-    'Coffee and walk in a park',
-    'Visit a cozy cafe and chat',
-    'Museum / gallery visit',
-    'Picnic by the river',
-    'Cook a meal together'
-  ];
-
-  useEffect(() => {
-    if(ans === 'yes'){
-      const duration = 1500;
-      const end = Date.now() + duration;
-      (function frame(){
-        confetti({ particleCount: 6, spread: 55, origin: { y: 0.6 } });
-        if(Date.now() < end) requestAnimationFrame(frame);
-      })();
+  const handleAnswer = (ans) => {
+    setAnswer(ans);
+    if (ans === 'yes') {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
     }
-  }, [ans]);
+  };
 
   return (
-    <main className={`min-h-screen flex justify-center items-center ${ans==='yes'? 'bg-gradient-to-br from-pink-400 via-red-300 to-yellow-200':'bg-gray-200'}`}>
-      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl">
-        <h2 className="text-3xl font-bold mb-4">Таны хариу баталгаажлаа</h2>
-        <p className="mb-6">Та: <strong>{ans==='yes'?'Тийм':'Үгүй'}</strong> гэж хариулсан.</p>
-        <h3 className="text-xl font-semibold mb-2">Сонгосон санаанууд:</h3>
-        <ul className="list-disc list-inside mb-6">
-          {chosenIndexes.length>0 ? chosenIndexes.map(i=><li key={i}>{allIdeas[i]}</li>): <li>Сонголт хийгдээгүй</li>}
-        </ul>
-        <button onClick={()=>router.push('/')} className="px-4 py-3 bg-blue-600 text-white rounded-xl w-full">Дахин эхлэх</button>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-purple-50 p-4">
+      <motion.h1
+        className="text-4xl font-bold mb-6"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 120 }}
+      >
+        Чи надтай болзоонд явхыг зөвшөөрч байна уу?
+      </motion.h1>
+
+      <div className="flex space-x-4">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleAnswer('yes')}
+          className={`px-6 py-3 rounded text-white font-semibold ${
+            answer === 'yes' ? 'bg-green-500' : 'bg-green-400'
+          }`}
+        >
+          YES
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => handleAnswer('no')}
+          className={`px-6 py-3 rounded text-white font-semibold ${
+            answer === 'no' ? 'bg-red-500' : 'bg-red-400'
+          }`}
+        >
+          NO
+        </motion.button>
       </div>
-    </main>
+
+      {answer && (
+        <motion.div
+          className="mt-8 text-xl font-medium"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Таны сонголт: {answer.toUpperCase()}
+        </motion.div>
+      )}
+    </div>
   );
 }
