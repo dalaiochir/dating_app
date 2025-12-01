@@ -1,76 +1,61 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-
-// Simple emoji rain component
-function EmojiRain({ emojis, count = 30 }) {
-  return (
-    <>
-      {Array.from({ length: count }).map((_, i) => {
-        const style = {
-          position: 'absolute',
-          top: `${-Math.random() * 20}vh`,
-          left: `${Math.random() * 100}vw`,
-          fontSize: `${12 + Math.random() * 24}px`,
-          animation: `fall ${5 + Math.random() * 5}s linear infinite`,
-          pointerEvents: 'none',
-        };
-        const emoji = emojis[Math.floor(Math.random() * emojis.length)];
-        return (
-          <span key={i} style={style}>
-            {emoji}
-          </span>
-        );
-      })}
-      <style jsx>{`
-        @keyframes fall {
-          0% {
-            transform: translateY(0);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(110vh);
-            opacity: 0;
-          }
-        }
-      `}</style>
-    </>
-  );
-}
+import confetti from 'canvas-confetti';
 
 export default function HomePage() {
-  const router = useRouter();
-  const [clicks, setClicks] = useState(0);
+  const [agree, setAgree] = useState(null);
 
-  const handleSecretClick = () => {
-    setClicks((prev) => prev + 1);
-    if (clicks + 1 >= 5) {
-      router.push('/surprise'); // 5 clicks → secret page
+  useEffect(() => {
+    if (agree === true) {
+      confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
     }
-  };
+  }, [agree]);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-pink-50 to-purple-100 overflow-hidden">
-      {/* Emoji rain */}
-      <EmojiRain emojis={['💖','🌸','🌹','✨','💕']} count={40} />
-
-      {/* Main content */}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-pink-50 to-purple-100 p-6">
       <motion.h1
-        className="text-5xl font-bold mb-6 cursor-pointer select-none z-10"
-        whileHover={{ scale: 1.1, rotate: [0, 5, -5, 0] }}
-        onClick={handleSecretClick}
+        className="text-5xl font-bold mb-8 text-center"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        💌 Click me for a secret surprise!
+        Миний Сайхан Болзоо
       </motion.h1>
-      <motion.p
-        className="text-lg z-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+
+      <p className="text-xl mb-6 text-center">
+        Энэ бол зөвхөн чиний нууцлан орох романтик сайтад урьсан урилга юм 😘
+      </p>
+
+      <motion.button
+        onClick={() => setAgree(true)}
+        className="px-8 py-4 mb-4 rounded-full bg-pink-400 text-white font-bold shadow-lg hover:scale-105 transition-transform"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
       >
-        Click the heart multiple times and see the magic...
-      </motion.p>
+        Би зөвшөөрч байна ❤️
+      </motion.button>
+
+      <motion.button
+        onClick={() => setAgree(false)}
+        className="px-8 py-4 rounded-full bg-gray-200 text-gray-800 font-bold shadow-lg hover:scale-105 transition-transform"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        Үгүй 😢
+      </motion.button>
+
+      {agree !== null && (
+        <motion.p
+          className="mt-8 text-2xl font-semibold text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {agree
+            ? 'Баяр хүргэе! 🎉 Болзоонд явна!'
+            : 'Өө, дараа үзнэ ээ 😢'}
+        </motion.p>
+      )}
     </div>
   );
 }
